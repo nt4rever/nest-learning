@@ -1,16 +1,28 @@
-import { Controller, Post, UploadedFile, UploadedFiles } from '@nestjs/common';
+import {
+    Controller,
+    Post,
+    UploadedFile,
+    UploadedFiles,
+    UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtGuard } from 'src/auth/guard';
 import { ApiFiles, ApiImageFile, ApiImageFiles } from './decorator';
+import { UploadService } from './upload.service';
 import { ParseFile } from './validation/parse-file.pipe';
 
+@UseGuards(JwtGuard)
+@ApiBearerAuth()
 @Controller('files')
 export class UploadController {
+    constructor(private uploadService: UploadService) {}
     @Post('upload')
     @ApiImageFile('image', true)
     uploadFile(
         @UploadedFile(ParseFile)
         file: Express.Multer.File,
     ) {
-        return file;
+        return this.uploadService.uploadFile(file);
     }
 
     @Post('uploads')

@@ -10,7 +10,7 @@ import {
     SchemaObject,
 } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import { diskStorage } from 'multer';
-import { destinationPath } from 'src/shared/helper';
+import { destinationPath } from '../../shared/helper';
 import { customFileName, fileMineTypeFilter } from '../localOptions';
 
 export type UploadFields = MulterField & { required?: boolean };

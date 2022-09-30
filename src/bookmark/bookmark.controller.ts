@@ -13,8 +13,10 @@ import {
     Delete,
 } from '@nestjs/common';
 import { GetUser } from '../auth/decorator';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @UseGuards(JwtGuard)
+@ApiBearerAuth()
 @Controller('bookmark')
 export class BookmarkController {
     constructor(private bookmarkService: BookmarkService) {}

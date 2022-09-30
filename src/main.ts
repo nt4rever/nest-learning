@@ -12,6 +12,7 @@ async function bootstrap() {
     );
 
     const config = new DocumentBuilder()
+        .addBearerAuth()
         .setTitle('Nest example')
         .setDescription('The example API description')
         .setVersion('1.0')

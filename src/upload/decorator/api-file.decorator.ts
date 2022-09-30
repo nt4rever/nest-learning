@@ -2,6 +2,9 @@ import { applyDecorators, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
+import { destinationPath } from 'src/shared/helper';
+import { customFileName, fileMineTypeFilter } from '../localOptions';
 
 export function ApiFile(
     fieldName: string = 'file',
@@ -24,4 +27,30 @@ export function ApiFile(
             },
         }),
     );
+}
+
+export function ApiImageFile(
+    fileName: string = 'image',
+    required: boolean = false,
+) {
+    return ApiFile(fileName, required, {
+        fileFilter: fileMineTypeFilter('image'),
+        storage: diskStorage({
+            filename: customFileName(),
+            destination: destinationPath,
+        }),
+    });
+}
+
+export function ApiPdfFile(
+    fileName: string = 'document',
+    required: boolean = false,
+) {
+    return ApiFile(fileName, required, {
+        fileFilter: fileMineTypeFilter('pdf'),
+        storage: diskStorage({
+            filename: customFileName(),
+            destination: destinationPath,
+        }),
+    });
 }

@@ -9,6 +9,9 @@ import {
     ReferenceObject,
     SchemaObject,
 } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { diskStorage } from 'multer';
+import { destinationPath } from 'src/shared/helper';
+import { customFileName, fileMineTypeFilter } from '../localOptions';
 
 export type UploadFields = MulterField & { required?: boolean };
 
@@ -36,4 +39,14 @@ export function ApiFileFields(
         ApiConsumes('multipart/form-data'),
         apiBody,
     );
+}
+
+export function ApiImageFiles(uploadFields: UploadFields[]) {
+    return ApiFileFields(uploadFields, {
+        fileFilter: fileMineTypeFilter('image'),
+        storage: diskStorage({
+            filename: customFileName(),
+            destination: destinationPath,
+        }),
+    });
 }
